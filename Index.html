@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Theo dõi học tập Online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h2 { margin-bottom: 10px; }
+    .subject {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      padding: 10px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      justify-content: space-between;
+    }
+    .circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: red;
+      margin-left: 10px;
+    }
+    .toggle {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <h2>📘 Theo dõi học tập (Online)</h2>
+
+  <div class="subject">
+    <span>Toán</span>
+    <div>
+      <input type="checkbox" class="toggle" id="math">
+      <span class="circle" id="math-circle"></span>
+    </div>
+  </div>
+
+  <div class="subject">
+    <span>Lý</span>
+    <div>
+      <input type="checkbox" class="toggle" id="physics">
+      <span class="circle" id="physics-circle"></span>
+    </div>
+  </div>
+
+  <div class="subject">
+    <span>Hóa</span>
+    <div>
+      <input type="checkbox" class="toggle" id="chemistry">
+      <span class="circle" id="chemistry-circle"></span>
+    </div>
+  </div>
+
+  <!-- Bỏ các thẻ script riêng lẻ và thay bằng một thẻ script type="module" -->
+  <script type="module">
+    // Import các hàm cần thiết từ Firebase SDK dạng module
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+    // Config Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhYkEkBfNuPl-Q6BRWDzLqJtBUKLwU-Jc",
+      authDomain: "kiemtratranthaihoc.firebaseapp.com",
+      databaseURL: "https://kiemtratranthaihoc-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "kiemtratranthaihoc",
+      storageBucket: "kiemtratranthaihoc.appspot.com",
+      messagingSenderId: "826707842657",
+      appId: "1:826707842657:web:6d49e57d6f07d30e087c20",
+      measurementId: "G-Q7NPR41FRS"
+    };
+
+    // Khởi tạo Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app); // Truyền đối tượng app vào getDatabase
+
+    // Hàm setup cho từng môn
+    function setupToggle(subject) {
+      const toggle = document.getElementById(subject);
+      const circle = document.getElementById(subject + "-circle");
+      const subjectRef = ref(db, "subjects/" + subject); // Sử dụng hàm ref để tạo reference
+
+      // Khi có người đổi trạng thái, cập nhật Firebase
+      toggle.addEventListener("change", () => {
+        set(subjectRef, toggle.checked); // Sử dụng hàm set để ghi dữ liệu
+      });
+
+      // Khi Firebase thay đổi, cập nhật giao diện
+      onValue(subjectRef, (snapshot) => { // Sử dụng hàm onValue để lắng nghe sự kiện
+        const isOn = snapshot.val();
+        toggle.checked = isOn;
+        circle.style.background = isOn ? "green" : "red";
+      });
+    }
+
+    setupToggle("math");
+    setupToggle("physics");
+    setupToggle("chemistry");
+  </script>
+</body>
+</html>
