@@ -5,55 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thông tin lớp 12A2</title>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK mới nhất -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js"></script>
 
   <style>
-    body { font-family: 'Poppins', sans-serif; background: #eef3ff; margin: 0; padding: 20px; }
-    h1 { text-align: center; color: #333; }
-    .btn { display: block; margin: 20px auto; padding: 10px 20px; background: #007bff; color: white;
-           border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-    .btn:hover { background: #0056c7; }
-    .container { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 20px; }
-    .card { background: white; border-radius: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); text-align: center; padding: 15px; }
-    .card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
-    .card h3 { margin: 8px 0; }
-    .card p { margin: 2px 0; color: #555; }
-    .social a { display: inline-block; margin: 3px; padding: 4px 8px; font-size: 12px; border-radius: 6px; color: #fff; text-decoration: none; }
-    .facebook { background: #1877F2; } .instagram { background: #E1306C; }
-    .tiktok { background: #000; } .youtube { background: #FF0000; } .github { background: #24292E; }
-    .edit, .delete { background: #eee; border: none; margin: 5px; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
-    .delete:hover { background: #ffbaba; } .edit:hover { background: #ccc; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f4f7ff;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .social a {
+      display: inline-block;
+      margin: 3px;
+      padding: 5px 10px;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .facebook { background-color: #1877F2; }
+    .instagram { background-color: #E1306C; }
+    .tiktok { background-color: #000; }
+    .youtube { background-color: #FF0000; }
+    .github { background-color: #24292E; }
+    button {
+      margin: 5px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #0056c7;
+    }
+    .delete {
+      background: #ff4b5c;
+    }
+    .delete:hover {
+      background: #d63031;
+    }
+    .add-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .add-btn:hover {
+      background: #0056c7;
+    }
+    dialog {
+      border: none;
+      border-radius: 15px;
+      padding: 20px;
+      width: 350px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    dialog input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    dialog button {
+      margin-top: 10px;
+    }
   </style>
 </head>
-
 <body>
   <h1>📘 Thông tin lớp 12A2</h1>
-  <button class="btn" onclick="addStudent()">+ Thêm thành viên</button>
+  <button class="add-btn" onclick="showForm()">+ Thêm thành viên</button>
+
   <div class="container" id="studentContainer"></div>
-  <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+  <!-- Form thêm/sửa -->
+  <dialog id="studentForm">
+    <h3 id="formTitle">Thêm thành viên</h3>
+    <input id="name" placeholder="Tên" required>
+    <input id="phone" placeholder="Số điện thoại">
+    <input id="birthday" placeholder="Ngày sinh (dd/mm/yyyy)">
+    <input id="facebook" placeholder="Link Facebook">
+    <input id="instagram" placeholder="Link Instagram">
+    <input id="tiktok" placeholder="Link TikTok">
+    <input id="youtube" placeholder="Link YouTube">
+    <input id="github" placeholder="Link GitHub">
+    <input type="file" id="avatarInput" accept="image/*">
+    <button onclick="saveStudent()">Lưu</button>
+    <button onclick="closeForm()">Hủy</button>
+  </dialog>
 
   <script>
-    // === CẤU HÌNH FIREBASE (CỦA BẠN) ===
+    // === Firebase cấu hình ===
     const firebaseConfig = {
       apiKey: "AIzaSyCrVM5Mqg33MY8feGyWDUQZ9lxJiEosNqU",
       authDomain: "thongtin12a2-fcbb1.firebaseapp.com",
       databaseURL: "https://thongtin12a2-fcbb1-default-rtdb.firebaseio.com",
       projectId: "thongtin12a2-fcbb1",
-      storageBucket: "thongtin12a2-fcbb1.firebasestorage.app",
+      storageBucket: "thongtin12a2-fcbb1.appspot.com",
       messagingSenderId: "68791424681",
       appId: "1:68791424681:web:6341da9a812277ed313bb8",
       measurementId: "G-007479CWJ3"
     };
 
-    // === KHỞI TẠO FIREBASE ===
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    // === KIỂM TRA KẾT NỐI ===
+    // Kiểm tra kết nối Firebase
     db.collection("testConnection").add({ time: new Date().toISOString() })
       .then(() => console.log("✅ Firestore kết nối thành công"))
       .catch(e => console.error("❌ Firestore lỗi:", e));
@@ -62,92 +156,85 @@
       .then(() => console.log("✅ Storage kết nối thành công"))
       .catch(e => console.error("❌ Storage lỗi:", e));
 
-    // === HIỂN THỊ DỮ LIỆU ===
+    // --- hiển thị danh sách ---
     const container = document.getElementById("studentContainer");
     db.collection("students").onSnapshot(snapshot => {
       container.innerHTML = "";
       snapshot.forEach(doc => renderCard(doc.id, doc.data()));
     });
 
-    // === HIỂN THỊ MỘT THẺ ===
     function renderCard(id, s) {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = `
-        <img src="${s.avatar || 'https://via.placeholder.com/100'}">
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${s.avatar || 'https://via.placeholder.com/100'}" alt="">
         <h3>${s.name}</h3>
-        <p>🎂 ${s.birthday || 'Chưa nhập'}</p>
-        <p>📞 ${s.phone || 'Chưa nhập'}</p>
+        <p>🎂 ${s.birthday || "Chưa nhập"}</p>
+        <p>📞 ${s.phone || "Chưa nhập"}</p>
         <div class="social">
-          ${s.facebook ? `<a href="${s.facebook}" target="_blank" class="facebook">Facebook</a>` : ""}
-          ${s.instagram ? `<a href="${s.instagram}" target="_blank" class="instagram">Instagram</a>` : ""}
-          ${s.tiktok ? `<a href="${s.tiktok}" target="_blank" class="tiktok">TikTok</a>` : ""}
-          ${s.youtube ? `<a href="${s.youtube}" target="_blank" class="youtube">YouTube</a>` : ""}
-          ${s.github ? `<a href="${s.github}" target="_blank" class="github">GitHub</a>` : ""}
+          ${s.facebook ? `<a href="${s.facebook}" class="facebook" target="_blank">Facebook</a>` : ""}
+          ${s.instagram ? `<a href="${s.instagram}" class="instagram" target="_blank">Instagram</a>` : ""}
+          ${s.tiktok ? `<a href="${s.tiktok}" class="tiktok" target="_blank">TikTok</a>` : ""}
+          ${s.youtube ? `<a href="${s.youtube}" class="youtube" target="_blank">YouTube</a>` : ""}
+          ${s.github ? `<a href="${s.github}" class="github" target="_blank">GitHub</a>` : ""}
         </div>
-        <button class="edit" onclick="editStudent('${id}')">Sửa</button>
+        <button onclick="editStudent('${id}')">Sửa</button>
         <button class="delete" onclick="deleteStudent('${id}')">Xóa</button>
       `;
-      container.appendChild(div);
+      container.appendChild(card);
     }
 
-    // === THÊM THÀNH VIÊN ===
-    function addStudent() {
-      const name = prompt("Tên:");
-      const phone = prompt("Số điện thoại:");
-      const birthday = prompt("Ngày sinh:");
-      const facebook = prompt("Link Facebook (Enter để bỏ qua):") || "";
-      const instagram = prompt("Link Instagram (Enter để bỏ qua):") || "";
-      const tiktok = prompt("Link TikTok (Enter để bỏ qua):") || "";
-      const youtube = prompt("Link YouTube (Enter để bỏ qua):") || "";
-      const github = prompt("Link GitHub (Enter để bỏ qua):") || "";
+    // --- Thêm / sửa ---
+    let editingId = null;
 
-      const fileInput = document.getElementById("fileInput");
-      fileInput.onchange = e => {
-        const file = e.target.files[0];
-        if (file) {
-          const ref = storage.ref("avatars/" + Date.now() + "_" + file.name);
-          ref.put(file).then(async () => {
-            const url = await ref.getDownloadURL();
-            db.collection("students").add({ name, phone, birthday, facebook, instagram, tiktok, youtube, github, avatar: url });
-          });
+    function showForm(id = null, data = null) {
+      editingId = id;
+      document.getElementById("formTitle").textContent = id ? "Sửa thông tin" : "Thêm thành viên";
+      document.getElementById("studentForm").showModal();
+
+      if (data) {
+        for (const key in data) {
+          if (document.getElementById(key)) document.getElementById(key).value = data[key];
         }
-      };
-      fileInput.click();
-    }
-
-    // === SỬA THÔNG TIN ===
-    async function editStudent(id) {
-      const docRef = db.collection("students").doc(id);
-      const s = (await docRef.get()).data();
-      const name = prompt("Tên:", s.name);
-      const phone = prompt("Số điện thoại:", s.phone);
-      const birthday = prompt("Ngày sinh:", s.birthday);
-      const facebook = prompt("Link Facebook:", s.facebook);
-      const instagram = prompt("Link Instagram:", s.instagram);
-      const tiktok = prompt("Link TikTok:", s.tiktok);
-      const youtube = prompt("Link YouTube:", s.youtube);
-      const github = prompt("Link GitHub:", s.github);
-
-      if (confirm("Đổi ảnh đại diện không?")) {
-        const fileInput = document.getElementById("fileInput");
-        fileInput.onchange = e => {
-          const file = e.target.files[0];
-          if (file) {
-            const ref = storage.ref("avatars/" + Date.now() + "_" + file.name);
-            ref.put(file).then(async () => {
-              const url = await ref.getDownloadURL();
-              docRef.update({ name, phone, birthday, facebook, instagram, tiktok, youtube, github, avatar: url });
-            });
-          }
-        };
-        fileInput.click();
-      } else {
-        docRef.update({ name, phone, birthday, facebook, instagram, tiktok, youtube, github });
       }
     }
 
-    // === XÓA THÀNH VIÊN ===
+    function closeForm() {
+      document.getElementById("studentForm").close();
+      editingId = null;
+      document.querySelectorAll("#studentForm input").forEach(i => i.value = "");
+    }
+
+    async function saveStudent() {
+      const info = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        birthday: document.getElementById("birthday").value,
+        facebook: document.getElementById("facebook").value,
+        instagram: document.getElementById("instagram").value,
+        tiktok: document.getElementById("tiktok").value,
+        youtube: document.getElementById("youtube").value,
+        github: document.getElementById("github").value
+      };
+
+      const file = document.getElementById("avatarInput").files[0];
+      if (file) {
+        const ref = storage.ref("avatars/" + Date.now() + "_" + file.name);
+        await ref.put(file);
+        info.avatar = await ref.getDownloadURL();
+      }
+
+      if (editingId) await db.collection("students").doc(editingId).update(info);
+      else await db.collection("students").add(info);
+
+      closeForm();
+    }
+
+    async function editStudent(id) {
+      const doc = await db.collection("students").doc(id).get();
+      showForm(id, doc.data());
+    }
+
     function deleteStudent(id) {
       if (confirm("Xóa thành viên này?")) db.collection("students").doc(id).delete();
     }
