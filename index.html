@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thẻ hồ sơ học sinh</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -17,7 +17,11 @@
             --error-color: #e24a4a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Roboto', sans-serif;
@@ -75,20 +79,38 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        .card-content { padding: 1.5rem; flex-grow: 1; }
-
-        .card-header { display: flex; align-items: center; margin-bottom: 1rem; }
-
-        .avatar {
-            width: 80px; height: 80px; border-radius: 50%; margin-right: 1.5rem;
-            object-fit: cover; border: 3px solid var(--primary-color);
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
         }
 
-        .card-header h2 { margin: 0; font-size: 1.5rem; }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
 
-        .card-body p { margin-bottom: 0.5rem; }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 1.5rem;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
 
-        .social-links { margin-top: 1rem; }
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .card-body p {
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
 
         .social-links a {
             color: var(--primary-color);
@@ -97,7 +119,9 @@
             transition: color 0.3s;
         }
 
-        .social-links a:hover { color: #333; }
+        .social-links a:hover {
+            color: #333;
+        }
 
         .card-footer {
             background-color: #f9f9f9;
@@ -114,9 +138,17 @@
             transition: color 0.3s;
         }
 
-        .edit-btn { color: #4caf50; }
-        .delete-btn { color: #f44336; }
-        .edit-btn:hover, .delete-btn:hover { color: #333; }
+        .edit-btn {
+            color: #4caf50;
+        }
+
+        .delete-btn {
+            color: #f44336;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            color: #333;
+        }
 
         #student-modal {
             border: none;
@@ -132,22 +164,68 @@
             backdrop-filter: blur(5px);
         }
 
-        #student-form { display: flex; flex-direction: column; }
-        #student-form h2 { margin-bottom: 1.5rem; text-align: center; }
-        #student-form label { margin-bottom: 0.5rem; font-weight: bold; }
-        #student-form input { padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 5px; }
-
-        .form-buttons {
-            display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;
+        #student-form {
+            display: flex;
+            flex-direction: column;
         }
 
-        #student-form button { padding: 0.8rem 1.5rem; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
-        #save-btn { background-color: var(--primary-color); color: #fff; }
-        #cancel-btn { background-color: #ccc; color: #333; }
-        #save-btn:hover { background-color: #357abd; }
-        #cancel-btn:hover { background-color: #b3b3b3; }
+        #student-form h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
 
-        .error-message { color: var(--error-color); font-size: 0.9rem; height: 1rem; margin-bottom: 0.5rem; }
+        #student-form label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        #student-form input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        #student-form button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        #save-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        #cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        #save-btn:hover {
+            background-color: #357abd;
+        }
+
+        #cancel-btn:hover {
+            background-color: #b3b3b3;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -155,12 +233,13 @@
         <h1>Thẻ hồ sơ học sinh</h1>
         <button id="add-student-btn">Thêm học sinh</button>
     </header>
-    <main id="card-container"></main>
+    <main id="card-container">
+
+    </main>
 
     <dialog id="student-modal">
         <form id="student-form">
             <h2 id="modal-title">Thêm học sinh</h2>
-
             <label for="name">Tên:</label>
             <input type="text" id="name" name="name" required>
             <span class="error-message" id="name-error"></span>
@@ -204,13 +283,13 @@
         </form>
     </dialog>
 
-    <!-- Firebase SDKs (phiên bản mới để tránh CSP/eval issue) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <script>
-      // Firebase config (project của bạn)
+      // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyCrVM5Mqg33MY8feGyWDUQZ9lxJiEosNqU",
         authDomain: "thongtin12a2-fcbb1.firebaseapp.com",
@@ -225,15 +304,6 @@
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
       const storage = firebase.storage();
-
-      // Kiểm tra kết nối Firestore + Storage
-      db.collection("testConnection").add({ time: new Date().toISOString() })
-        .then(() => console.log("✅ Firestore kết nối thành công"))
-        .catch(e => console.error("❌ Firestore lỗi:", e));
-
-      storage.ref().listAll()
-        .then(() => console.log("✅ Storage kết nối thành công"))
-        .catch(e => console.error("❌ Storage lỗi:", e));
     </script>
 
     <script>
@@ -247,14 +317,15 @@
 
     let editingCardId = null;
 
+    // Firebase references are initialized in the HTML
+
     const renderCards = (students) => {
         cardContainer.innerHTML = '';
         students.forEach(student => {
             const studentCard = document.createElement('student-card');
             studentCard.setAttribute('id', student.id);
             for (const key in student.data) {
-                if (student.data[key] !== undefined && student.data[key] !== null)
-                    studentCard.setAttribute(key, student.data[key]);
+                studentCard.setAttribute(key, student.data[key]);
             }
             cardContainer.appendChild(studentCard);
         });
@@ -265,6 +336,7 @@
         const students = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
         renderCards(students);
     });
+
 
     const showModal = (title, studentId = null) => {
         modalTitle.textContent = title;
@@ -312,9 +384,11 @@
             } else if (editingCardId) {
                 // Keep the existing avatar if not changed
                 const doc = await db.collection('students').doc(editingCardId).get();
-                if (doc.exists) studentData.avatar = doc.data().avatar || '';
+                if (doc.exists) {
+                    studentData.avatar = doc.data().avatar;
+                }
             } else {
-				studentData.avatar = '';
+				studentData.avatar = ''
 			}
 
             if (editingCardId) {
@@ -327,6 +401,7 @@
             closeModal();
         } catch (error) {
             console.error("Error saving student: ", error);
+            // You might want to show an error message to the user here
         }
     });
 
@@ -385,17 +460,64 @@
                          transform: translateY(-5px);
                          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
                     }
-                    .card-content { padding: 1.5rem; flex-grow: 1; }
-                    .card-header { display: flex; align-items: center; margin-bottom: 1rem; }
-                    .avatar { width: 80px; height: 80px; border-radius: 50%; margin-right: 1.5rem; object-fit: cover; border: 3px solid #4a90e2; }
-                    .card-header h2 { margin: 0; font-size: 1.5rem; }
-                    .card-body p { margin-bottom: 0.5rem; }
-                    .social-links { margin-top: 1rem; }
-                    .social-links a { color: #4a90e2; margin-right: 1rem; font-size: 1.5rem; transition: color 0.3s; }
-                    .social-links a:hover { color: #333; }
-                    .card-footer { background-color: #f9f9f9; padding: 1rem 1.5rem; text-align: right; }
-                    .card-footer button { background-color: transparent; border: none; cursor: pointer; font-size: 1rem; margin-left: 1rem; transition: color 0.3s; }
-                    .edit-btn { color: #4caf50; } .delete-btn { color: #f44336; } .edit-btn:hover, .delete-btn:hover { color: #333; }
+                    .card-content {
+                        padding: 1.5rem;
+                        flex-grow: 1;
+                    }
+                    .card-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 1rem;
+                    }
+                    .avatar {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                        margin-right: 1.5rem;
+                        object-fit: cover;
+                        border: 3px solid #4a90e2;
+                    }
+                    .card-header h2 {
+                        margin: 0;
+                        font-size: 1.5rem;
+                    }
+                    .card-body p {
+                        margin-bottom: 0.5rem;
+                    }
+                     .social-links {
+                        margin-top: 1rem;
+                    }
+                    .social-links a {
+                        color: #4a90e2;
+                        margin-right: 1rem;
+                        font-size: 1.5rem;
+                        transition: color 0.3s;
+                    }
+                    .social-links a:hover {
+                        color: #333;
+                    }
+                    .card-footer {
+                        background-color: #f9f9f9;
+                        padding: 1rem 1.5rem;
+                        text-align: right;
+                    }
+                    .card-footer button {
+                        background-color: transparent;
+                        border: none;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        margin-left: 1rem;
+                        transition: color 0.3s;
+                    }
+                    .edit-btn {
+                        color: #4caf50;
+                    }
+                    .delete-btn {
+                        color: #f44336;
+                    }
+                    .edit-btn:hover, .delete-btn:hover {
+                        color: #333;
+                    }
                 </style>
                 <div class="card-content">
                     <div class="card-header">
