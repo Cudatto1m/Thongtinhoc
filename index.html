@@ -89,12 +89,47 @@
   <main id="card-container"></main>
 
   <script>
-    async function loadStudents() {
-      const res = await fetch("data.json");
-      const students = await res.json();
+    // === DỮ LIỆU HỌC SINH NHẬP TRỰC TIẾP TRONG MÃ ===
+    const students = [
+      {
+        name: "Nguyễn Thành Đạt",
+        phone: "0941569243",
+        birthday: "2008-11-20",
+        email: "dat854155557@gmail.com",
+        facebook: "nguyenvana",
+        instagram: "vana.ig",
+        github: "vana",
+        tiktok: "vanatiktok",
+        avatar: "https://i.pravatar.cc/150?img=1"
+      },
+      {
+        name: "Trần Thị B",
+        phone: "0912345678",
+        birthday: "2005-08-15",
+        email: "thib@example.com",
+        facebook: "tranthib",
+        instagram: "thib.ig",
+        github: "tranthib",
+        tiktok: "thib.tiktok",
+        avatar: "https://i.pravatar.cc/150?img=2"
+      },
+      {
+        name: "Phạm Quốc Cường",
+        phone: "0934567890",
+        birthday: "2005-06-01",
+        email: "cuongpq@example.com",
+        facebook: "cuongpq",
+        instagram: "cuong.ig",
+        github: "cuongpq",
+        tiktok: "cuongpq",
+        avatar: "https://i.pravatar.cc/150?img=3"
+      }
+    ];
+
+    // === HIỂN THỊ DỮ LIỆU ===
+    function renderCards() {
       const container = document.getElementById("card-container");
       container.innerHTML = "";
-
       students.forEach(s => {
         const card = document.createElement("student-card");
         for (const key in s) if (s[key]) card.setAttribute(key, s[key]);
@@ -137,7 +172,7 @@
     }
 
     customElements.define("student-card", StudentCard);
-    document.addEventListener("DOMContentLoaded", loadStudents);
+    document.addEventListener("DOMContentLoaded", renderCards);
   </script>
 </body>
 </html>
