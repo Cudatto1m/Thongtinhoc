@@ -1,381 +1,143 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thẻ hồ sơ học sinh</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thẻ hồ sơ học sinh</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        :root {
-            --primary-color: #4a90e2;
-            --background-color: #f4f4f4;
-            --card-background: #ffffff;
-            --text-color: #333;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --error-color: #e24a4a;
-        }
+    :root {
+      --primary-color: #4a90e2;
+      --background-color: #f4f4f4;
+      --card-background: #ffffff;
+      --text-color: #333;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+    }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
+    header {
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px var(--shadow-color);
+      margin-bottom: 2rem;
+    }
 
-        header {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 4px var(--shadow-color);
-            margin-bottom: 2rem;
-        }
+    #card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 0 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-        #add-student-btn {
-            background-color: #fff;
-            color: var(--primary-color);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    student-card {
+      background-color: var(--card-background);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px var(--shadow-color);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
 
-        #add-student-btn:hover {
-            background-color: var(--card-background);
-            color: var(--primary-color);
-        }
+    student-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
 
-        #card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 0 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    .card-content { padding: 1.5rem; flex-grow: 1; }
 
-        student-card {
-            background-color: var(--card-background);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px var(--shadow-color);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
+    .card-header { display: flex; align-items: center; margin-bottom: 1rem; }
 
-        student-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+    .avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      margin-right: 1.5rem; object-fit: cover;
+      border: 3px solid var(--primary-color);
+    }
 
-        #student-modal {
-            border: none;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-        }
+    .card-header h2 { margin: 0; font-size: 1.5rem; }
 
-        #student-modal::backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
+    .card-body p { margin-bottom: 0.5rem; }
 
-        #student-form {
-            display: flex;
-            flex-direction: column;
-        }
+    .social-links { margin-top: 1rem; }
 
-        #student-form h2 {
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
+    .social-links a {
+      color: var(--primary-color);
+      margin-right: 1rem;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
 
-        #student-form label {
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        #student-form input {
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .form-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        #student-form button {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        #save-btn {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-
-        #cancel-btn {
-            background-color: #ccc;
-            color: #333;
-        }
-    </style>
+    .social-links a:hover { color: #333; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Thẻ hồ sơ học sinh</h1>
-        <button id="add-student-btn">Thêm học sinh</button>
-    </header>
-    <main id="card-container"></main>
+  <header>
+    <h1>Thẻ hồ sơ học sinh</h1>
+  </header>
+  <main id="card-container"></main>
 
-    <dialog id="student-modal">
-        <form id="student-form">
-            <h2 id="modal-title">Thêm học sinh</h2>
-            <input type="hidden" name="id">
-            <label for="name">Tên:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="phone">Số điện thoại:</label>
-            <input type="tel" id="phone" name="phone">
-            <label for="birthday">Ngày sinh:</label>
-            <input type="date" id="birthday" name="birthday">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email">
-            <label for="facebook">Facebook:</label>
-            <input type="text" id="facebook" name="facebook">
-            <label for="instagram">Instagram:</label>
-            <input type="text" id="instagram" name="instagram">
-            <label for="github">GitHub:</label>
-            <input type="text" id="github" name="github">
-            <label for="tiktok">TikTok:</label>
-            <input type="text" id="tiktok" name="tiktok">
-            <label for="avatar-input">Ảnh đại diện:</label>
-            <input type="file" id="avatar-input" name="avatarFile" accept="image/*">
-            <input type="hidden" name="avatar">
-            
-            <div class="form-buttons">
-                <button type="submit" id="save-btn">Lưu</button>
-                <button type="button" id="cancel-btn">Hủy</button>
+  <script>
+    async function loadStudents() {
+      const res = await fetch("data.json");
+      const students = await res.json();
+      const container = document.getElementById("card-container");
+      container.innerHTML = "";
+
+      students.forEach(s => {
+        const card = document.createElement("student-card");
+        for (const key in s) if (s[key]) card.setAttribute(key, s[key]);
+        container.appendChild(card);
+      });
+    }
+
+    class StudentCard extends HTMLElement {
+      connectedCallback() {
+        const name = this.getAttribute("name");
+        const phone = this.getAttribute("phone");
+        const birthday = this.getAttribute("birthday");
+        const email = this.getAttribute("email");
+        const facebook = this.getAttribute("facebook");
+        const instagram = this.getAttribute("instagram");
+        const github = this.getAttribute("github");
+        const tiktok = this.getAttribute("tiktok");
+        const avatar = this.getAttribute("avatar");
+
+        this.innerHTML = `
+          <div class="card-content">
+            <div class="card-header">
+              <img src="${avatar || 'https://via.placeholder.com/80'}" class="avatar">
+              <h2>${name}</h2>
             </div>
-        </form>
-    </dialog>
+            <div class="card-body">
+              <p><strong>Số điện thoại:</strong> ${phone || 'N/A'}</p>
+              <p><strong>Ngày sinh:</strong> ${birthday || 'N/A'}</p>
+              <p><strong>Email:</strong> ${email || 'N/A'}</p>
+              <div class="social-links">
+                ${facebook ? `<a href="https://facebook.com/${facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ""}
+                ${instagram ? `<a href="https://instagram.com/${instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ""}
+                ${github ? `<a href="https://github.com/${github}" target="_blank"><i class="fab fa-github"></i></a>` : ""}
+                ${tiktok ? `<a href="https://tiktok.com/@${tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>` : ""}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const addStudentBtn = document.getElementById('add-student-btn');
-            const studentModal = document.getElementById('student-modal');
-            const studentForm = document.getElementById('student-form');
-            const cancelBtn = document.getElementById('cancel-btn');
-            const cardContainer = document.getElementById('card-container');
-            const modalTitle = document.getElementById('modal-title');
-
-            // Sample data - this will be reset on every page load
-            let students = [
-                {
-                    id: '1',
-                    name: 'Nguyễn Văn A',
-                    phone: '0987654321',
-                    birthday: '2005-10-20',
-                    email: 'nguyenvana@example.com',
-                    facebook: 'nguyenvana',
-                    github: 'nguyenvana',
-                    avatar: 'https://i.pravatar.cc/150?img=1'
-                },
-                {
-                    id: '2',
-                    name: 'Trần Thị B',
-                    phone: '0123456789',
-                    birthday: '2005-11-15',
-                    email: 'tranthib@example.com',
-                    instagram: 'tranthib',
-                    tiktok: 'tranthib',
-                    avatar: 'https://i.pravatar.cc/150?img=2'
-                }
-            ];
-
-            const renderCards = () => {
-                cardContainer.innerHTML = '';
-                students.forEach(student => {
-                    const studentCard = document.createElement('student-card');
-                    // Use a unique id for the element itself
-                    studentCard.dataset.id = student.id; 
-                    for (const key in student) {
-                        studentCard.setAttribute(key, student[key]);
-                    }
-                    cardContainer.appendChild(studentCard);
-                });
-            };
-
-            const showModal = (title, studentId = null) => {
-                modalTitle.textContent = title;
-                studentForm.reset();
-                
-                if (studentId) {
-                    const studentData = students.find(s => s.id === studentId);
-                    if (studentData) {
-                        for (const key in studentData) {
-                            if (studentForm.elements[key]) {
-                                studentForm.elements[key].value = studentData[key];
-                            }
-                        }
-                    }
-                } else {
-                    // For new students, assign a temporary unique ID
-                    studentForm.elements.id.value = `temp_${Date.now()}`;
-                }
-                studentModal.showModal();
-            };
-
-            const closeModal = () => {
-                studentModal.close();
-                studentForm.reset();
-            };
-
-            addStudentBtn.addEventListener('click', () => showModal('Thêm học sinh'));
-            cancelBtn.addEventListener('click', closeModal);
-
-            studentForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const formData = new FormData(studentForm);
-                const studentData = Object.fromEntries(formData.entries());
-                const avatarFile = studentForm.elements.avatarFile.files[0];
-                
-                // Simulate image upload by creating a local URL
-                if (avatarFile) {
-                    studentData.avatar = URL.createObjectURL(avatarFile);
-                }
-
-                const existingIndex = students.findIndex(s => s.id === studentData.id);
-
-                if (existingIndex > -1) {
-                    // Update existing student
-                    students[existingIndex] = { ...students[existingIndex], ...studentData };
-                } else {
-                    // Add new student
-                    students.push(studentData);
-                }
-                
-                renderCards();
-                closeModal();
-            });
-
-            cardContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('student-card');
-                if (!card) return;
-
-                const studentId = card.dataset.id;
-                
-                if (e.target.closest('.edit-btn')) {
-                    showModal('Chỉnh sửa học sinh', studentId);
-                }
-
-                if (e.target.closest('.delete-btn')) {
-                    if (confirm('Bạn có chắc chắn muốn xóa thẻ này không?')) {
-                        students = students.filter(s => s.id !== studentId);
-                        renderCards();
-                    }
-                }
-            });
-
-            // --- Web Component for the Student Card ---
-            class StudentCard extends HTMLElement {
-                constructor() {
-                    super();
-                    this.attachShadow({ mode: 'open' });
-                }
-
-                connectedCallback() {
-                    const name = this.getAttribute('name');
-                    const phone = this.getAttribute('phone');
-                    const birthday = this.getAttribute('birthday');
-                    const email = this.getAttribute('email');
-                    const facebook = this.getAttribute('facebook');
-                    const instagram = this.getAttribute('instagram');
-                    const github = this.getAttribute('github');
-                    const tiktok = this.getAttribute('tiktok');
-                    const avatar = this.getAttribute('avatar');
-
-                    this.shadowRoot.innerHTML = `
-                        <style>
-                            /* All the component-specific styles are now encapsulated here */
-                            @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
-                            :host {
-                                background-color: #fff;
-                                border-radius: 10px;
-                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                                overflow: hidden;
-                                transition: transform 0.3s, box-shadow 0.3s;
-                                display: flex;
-                                flex-direction: column;
-                            }
-                            :host(:hover) {
-                                transform: translateY(-5px);
-                                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-                            }
-                            .card-content { padding: 1.5rem; flex-grow: 1; }
-                            .card-header { display: flex; align-items: center; margin-bottom: 1rem; }
-                            .avatar { width: 80px; height: 80px; border-radius: 50%; margin-right: 1.5rem; object-fit: cover; border: 3px solid #4a90e2; }
-                            .card-header h2 { margin: 0; font-size: 1.5rem; }
-                            .card-body p { margin-bottom: 0.5rem; }
-                            .social-links { margin-top: 1rem; }
-                            .social-links a { color: #4a90e2; margin-right: 1rem; font-size: 1.5rem; transition: color 0.3s; }
-                            .social-links a:hover { color: #333; }
-                            .card-footer { background-color: #f9f9f9; padding: 1rem 1.5rem; text-align: right; }
-                            .card-footer button { background-color: transparent; border: none; cursor: pointer; font-size: 1rem; margin-left: 1rem; transition: color 0.3s; }
-                            .edit-btn { color: #4caf50; }
-                            .delete-btn { color: #f44336; }
-                            .edit-btn:hover, .delete-btn:hover { color: #333; }
-                        </style>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <img src="${avatar || 'https://via.placeholder.com/80'}" alt="Avatar" class="avatar">
-                                <h2>${name}</h2>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Số điện thoại:</strong> ${phone || 'N/A'}</p>
-                                <p><strong>Ngày sinh:</strong> ${birthday || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${email || 'N/A'}</p>
-                                <div class="social-links">
-                                    ${facebook ? `<a href="https://facebook.com/${facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ''}
-                                    ${instagram ? `<a href="https://instagram.com/${instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ''}
-                                    ${github ? `<a href="https://github.com/${github}" target="_blank"><i class="fab fa-github"></i></a>` : ''}
-                                    ${tiktok ? `<a href="https://tiktok.com/@${tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button class="edit-btn"><i class="fas fa-edit"></i> Chỉnh sửa</button>
-                            <button class="delete-btn"><i class="fas fa-trash"></i> Xóa</button>
-                        </div>
-                    `;
-                }
-            }
-
-            customElements.define('student-card', StudentCard);
-            
-            // Initial render
-            renderCards();
-        });
-    </script>
+    customElements.define("student-card", StudentCard);
+    document.addEventListener("DOMContentLoaded", loadStudents);
+  </script>
 </body>
 </html>
