@@ -1,14 +1,13 @@
-
 [
   {
-    "name": "Nguyễn Thành Đạt",
-    "phone": "0941569243",
-    "birthday": "2008-11-20",
-    "email": "dat854155557@gmail.com",
-    "facebook": "",
-    "instagram": "",
-    "github": "",
-    "tiktok": "",
+    "name": "Nguyễn Văn A",
+    "phone": "0987654321",
+    "birthday": "2005-10-20",
+    "email": "vana@example.com",
+    "facebook": "nguyenvana",
+    "instagram": "vana.ig",
+    "github": "vana",
+    "tiktok": "vanatiktok",
     "avatar": "https://i.pravatar.cc/150?img=1"
   },
   {
