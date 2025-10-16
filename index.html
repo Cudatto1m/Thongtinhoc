@@ -1,110 +1,551 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Thangchlonaohoc</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    h2 { margin-bottom: 10px; }
-    .subject {
-      display: flex;
-      align-items: center;
-      margin: 15px 0;
-      padding: 10px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      justify-content: space-between;
-    }
-    .circle {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: red;
-      margin-left: 10px;
-    }
-    .toggle {
-      transform: scale(1.2);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thẻ hồ sơ học sinh</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --background-color: #f4f4f4;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --error-color: #e24a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            margin-bottom: 2rem;
+        }
+
+        #add-student-btn {
+            background-color: #fff;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #add-student-btn:hover {
+            background-color: var(--card-background);
+            color: var(--primary-color);
+        }
+
+        #card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        student-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 1.5rem;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .card-body p {
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #333;
+        }
+
+        .card-footer {
+            background-color: #f9f9f9;
+            padding: 1rem 1.5rem;
+            text-align: right;
+        }
+
+        .card-footer button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 1rem;
+            transition: color 0.3s;
+        }
+
+        .edit-btn {
+            color: #4caf50;
+        }
+
+        .delete-btn {
+            color: #f44336;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            color: #333;
+        }
+
+        #student-modal {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        #student-modal::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        #student-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #student-form h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        #student-form label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        #student-form input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        #student-form button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        #save-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        #cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        #save-btn:hover {
+            background-color: #357abd;
+        }
+
+        #cancel-btn:hover {
+            background-color: #b3b3b3;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
 </head>
 <body>
-  <h2 style="color: green;font-size:50px">📘 thằng nào học môn gì thì tick vô</h2>
-  <p style="color: red;font-size:20px">vì thằng đạt ko thích phải nhắn tôi đang học. NÊN ai ai vào học thì xin vui lòng tick vô.
-Học song bỏ tick để tôi còn biết ok <br> Hễ tick vô thì nó lưu tick lại á phải bỏ tick đó sau khi bạn học song</p>
+    <header>
+        <h1>Thẻ hồ sơ học sinh</h1>
+        <button id="add-student-btn">Thêm học sinh</button>
+    </header>
+    <main id="card-container">
 
-  <div class="subject">
-    <span style="font-size:30px">Toán</span>
-    <div>
-      <input type="checkbox" class="toggle" id="math">
-      <span class="circle" id="math-circle"></span>
-    </div>
-  </div>
+    </main>
 
-  <div class="subject">
-    <span style="font-size:30px">Lý</span>
-    <div>
-      <input type="checkbox" class="toggle" id="physics">
-      <span class="circle" id="physics-circle"></span>
-    </div>
-  </div>
+    <dialog id="student-modal">
+        <form id="student-form">
+            <h2 id="modal-title">Thêm học sinh</h2>
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" required>
+            <span class="error-message" id="name-error"></span>
 
-  <div class="subject">
-    <span style="font-size:30px">Hóa</span>
-    <div>
-      <input type="checkbox" class="toggle" id="chemistry">
-      <span class="circle" id="chemistry-circle"></span>
-    </div>
-  </div>
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone">
+            <span class="error-message" id="phone-error"></span>
 
-  <!-- Bỏ các thẻ script riêng lẻ và thay bằng một thẻ script type="module" -->
-  <script type="module">
-    // Import các hàm cần thiết từ Firebase SDK dạng module
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+            <label for="birthday">Ngày sinh:</label>
+            <input type="date" id="birthday" name="birthday">
+            <span class="error-message" id="birthday-error"></span>
 
-    // Config Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBhYkEkBfNuPl-Q6BRWDzLqJtBUKLwU-Jc",
-      authDomain: "kiemtratranthaihoc.firebaseapp.com",
-      databaseURL: "https://kiemtratranthaihoc-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "kiemtratranthaihoc",
-      storageBucket: "kiemtratranthaihoc.appspot.com",
-      messagingSenderId: "826707842657",
-      appId: "1:826707842657:web:6d49e57d6f07d30e087c20",
-      measurementId: "G-Q7NPR41FRS"
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <span class="error-message" id="email-error"></span>
+
+            <label for="facebook">Facebook:</label>
+            <input type="text" id="facebook" name="facebook">
+            <span class="error-message" id="facebook-error"></span>
+
+            <label for="instagram">Instagram:</label>
+            <input type="text" id="instagram" name="instagram">
+            <span class="error-message" id="instagram-error"></span>
+
+            <label for="github">GitHub:</label>
+            <input type="text" id="github" name="github">
+            <span class="error-message" id="github-error"></span>
+
+            <label for="tiktok">TikTok:</label>
+            <input type="text" id="tiktok" name="tiktok">
+            <span class="error-message" id="tiktok-error"></span>
+
+            <label for="avatar">Ảnh đại diện:</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*">
+            <span class="error-message" id="avatar-error"></span>
+            
+            <div class="form-buttons">
+                <button type="submit" id="save-btn">Lưu</button>
+                <button type="button" id="cancel-btn">Hủy</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCrVM5Mqg33MY8feGyWDUQZ9lxJiEosNqU",
+        authDomain: "thongtin12a2-fcbb1.firebaseapp.com",
+        projectId: "thongtin12a2-fcbb1",
+        storageBucket: "thongtin12a2-fcbb1.appspot.com",
+        messagingSenderId: "68791424681",
+        appId: "1:68791424681:web:6341da9a812277ed313bb8",
+        measurementId: "G-007479CWJ3"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const storage = firebase.storage();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const addStudentBtn = document.getElementById('add-student-btn');
+    const studentModal = document.getElementById('student-modal');
+    const studentForm = document.getElementById('student-form');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const cardContainer = document.getElementById('card-container');
+    const modalTitle = document.getElementById('modal-title');
+
+    let editingCardId = null;
+
+    // Firebase references are initialized in the HTML
+
+    const renderCards = (students) => {
+        cardContainer.innerHTML = '';
+        students.forEach(student => {
+            const studentCard = document.createElement('student-card');
+            studentCard.setAttribute('id', student.id);
+            for (const key in student.data) {
+                studentCard.setAttribute(key, student.data[key]);
+            }
+            cardContainer.appendChild(studentCard);
+        });
+    };    
+
+    // Fetch students from Firestore and listen for real-time updates
+    db.collection('students').onSnapshot(snapshot => {
+        const students = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+        renderCards(students);
+    });
+
+
+    const showModal = (title, studentId = null) => {
+        modalTitle.textContent = title;
+        editingCardId = studentId;
+
+        if (studentId) {
+            db.collection('students').doc(studentId).get().then(doc => {
+                if (doc.exists) {
+                    const studentData = doc.data();
+                    for (const key in studentData) {
+                        if (studentForm.elements[key]) {
+                            studentForm.elements[key].value = studentData[key];
+                        }
+                    }
+                }
+            });
+        } else {
+            studentForm.reset();
+        }
+        studentModal.showModal();
     };
 
-    // Khởi tạo Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app); // Truyền đối tượng app vào getDatabase
+    const closeModal = () => {
+        studentModal.close();
+        studentForm.reset();
+        editingCardId = null;
+    };
 
-    // Hàm setup cho từng môn
-    function setupToggle(subject) {
-      const toggle = document.getElementById(subject);
-      const circle = document.getElementById(subject + "-circle");
-      const subjectRef = ref(db, "subjects/" + subject); // Sử dụng hàm ref để tạo reference
+    addStudentBtn.addEventListener('click', () => showModal('Thêm học sinh'));
 
-      // Khi có người đổi trạng thái, cập nhật Firebase
-      toggle.addEventListener("change", () => {
-        set(subjectRef, toggle.checked); // Sử dụng hàm set để ghi dữ liệu
-      });
+    cancelBtn.addEventListener('click', closeModal);
 
-      // Khi Firebase thay đổi, cập nhật giao diện
-      onValue(subjectRef, (snapshot) => { // Sử dụng hàm onValue để lắng nghe sự kiện
-        const isOn = snapshot.val();
-        toggle.checked = isOn;
-        circle.style.background = isOn ? "green" : "red";
-      });
+    studentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(studentForm);
+        const studentData = Object.fromEntries(formData.entries());
+        const avatarFile = studentForm.elements.avatar.files[0];
+
+        try {
+            // If there's an avatar file, upload it to Firebase Storage
+            if (avatarFile) {
+                const storageRef = storage.ref(`avatars/${Date.now()}_${avatarFile.name}`);
+                const snapshot = await storageRef.put(avatarFile);
+                studentData.avatar = await snapshot.ref.getDownloadURL();
+            } else if (editingCardId) {
+                // Keep the existing avatar if not changed
+                const doc = await db.collection('students').doc(editingCardId).get();
+                if (doc.exists) {
+                    studentData.avatar = doc.data().avatar;
+                }
+            } else {
+				studentData.avatar = ''
+			}
+
+            if (editingCardId) {
+                // Update existing student
+                await db.collection('students').doc(editingCardId).update(studentData);
+            } else {
+                // Add new student
+                await db.collection('students').add(studentData);
+            }
+            closeModal();
+        } catch (error) {
+            console.error("Error saving student: ", error);
+            // You might want to show an error message to the user here
+        }
+    });
+
+    cardContainer.addEventListener('click', (e) => {
+        const card = e.target.closest('student-card');
+        if (!card) return;
+
+        const studentId = card.getAttribute('id');
+        
+        if (e.target.closest('.edit-btn')) {
+             showModal('Chỉnh sửa học sinh', studentId);
+        }
+
+        if (e.target.closest('.delete-btn')) {
+            if (confirm('Bạn có chắc chắn muốn xóa thẻ này không?')) {
+                db.collection('students').doc(studentId).delete().catch(error => {
+                    console.error("Error deleting student: ", error);
+                });
+            }
+        }
+    });
+
+
+    // --- Web Component for the Student Card ---
+    class StudentCard extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+        }
+
+        connectedCallback() {
+            const id = this.getAttribute('id');
+            const name = this.getAttribute('name');
+            const phone = this.getAttribute('phone');
+            const birthday = this.getAttribute('birthday');
+            const email = this.getAttribute('email');
+            const facebook = this.getAttribute('facebook');
+            const instagram = this.getAttribute('instagram');
+            const github = this.getAttribute('github');
+            const tiktok = this.getAttribute('tiktok');
+            const avatar = this.getAttribute('avatar');
+
+            this.shadowRoot.innerHTML = `
+                <style>
+                    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+                    :host {
+                        background-color: #fff;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        overflow: hidden;
+                        transition: transform 0.3s, box-shadow 0.3s;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    :host(:hover) {
+                         transform: translateY(-5px);
+                         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                    }
+                    .card-content {
+                        padding: 1.5rem;
+                        flex-grow: 1;
+                    }
+                    .card-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 1rem;
+                    }
+                    .avatar {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                        margin-right: 1.5rem;
+                        object-fit: cover;
+                        border: 3px solid #4a90e2;
+                    }
+                    .card-header h2 {
+                        margin: 0;
+                        font-size: 1.5rem;
+                    }
+                    .card-body p {
+                        margin-bottom: 0.5rem;
+                    }
+                     .social-links {
+                        margin-top: 1rem;
+                    }
+                    .social-links a {
+                        color: #4a90e2;
+                        margin-right: 1rem;
+                        font-size: 1.5rem;
+                        transition: color 0.3s;
+                    }
+                    .social-links a:hover {
+                        color: #333;
+                    }
+                    .card-footer {
+                        background-color: #f9f9f9;
+                        padding: 1rem 1.5rem;
+                        text-align: right;
+                    }
+                    .card-footer button {
+                        background-color: transparent;
+                        border: none;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        margin-left: 1rem;
+                        transition: color 0.3s;
+                    }
+                    .edit-btn {
+                        color: #4caf50;
+                    }
+                    .delete-btn {
+                        color: #f44336;
+                    }
+                    .edit-btn:hover, .delete-btn:hover {
+                        color: #333;
+                    }
+                </style>
+                <div class="card-content">
+                    <div class="card-header">
+                        <img src="${avatar || 'https://via.placeholder.com/80'}" alt="Avatar" class="avatar">
+                        <h2>${name}</h2>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Số điện thoại:</strong> ${phone || 'N/A'}</p>
+                        <p><strong>Ngày sinh:</strong> ${birthday || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${email || 'N/A'}</p>
+                        <div class="social-links">
+                            ${facebook ? `<a href="https://facebook.com/${facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ''}
+                            ${instagram ? `<a href="https://instagram.com/${instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${github ? `<a href="https://github.com/${github}" target="_blank"><i class="fab fa-github"></i></a>` : ''}
+                            ${tiktok ? `<a href="https://tiktok.com/@${tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="edit-btn"><i class="fas fa-edit"></i> Chỉnh sửa</button>
+                    <button class="delete-btn"><i class="fas fa-trash"></i> Xóa</button>
+                </div>
+            `;
+        }
     }
 
-    setupToggle("math");
-    setupToggle("physics");
-    setupToggle("chemistry");
-  </script>
+    customElements.define('student-card', StudentCard);
+});
+    </script>
 </body>
 </html>
