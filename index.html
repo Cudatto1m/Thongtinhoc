@@ -89,17 +89,17 @@
   <main id="card-container"></main>
 
   <script>
-    // === DỮ LIỆU HỌC SINH NHẬP TRỰC TIẾP TRONG MÃ ===
+    // === DỮ LIỆU HỌC SINH (nhập trực tiếp) ===
     const students = [
       {
-        name: "Nguyễn Thành Đạt",
-        phone: "0941569243",
-        birthday: "2008-11-20",
-        email: "dat854155557@gmail.com",
-        facebook: "nguyenvana",
-        instagram: "vana.ig",
-        github: "vana",
-        tiktok: "vanatiktok",
+        name: "Nguyễn Văn A",
+        phone: "0987654321",
+        birthday: "2005-10-20",
+        email: "vana@example.com",
+        facebook: "https://facebook.com/nguyenvana",
+        instagram: "https://instagram.com/vana.ig",
+        github: "https://github.com/vana",
+        tiktok: "https://tiktok.com/@vanatiktok",
         avatar: "https://i.pravatar.cc/150?img=1"
       },
       {
@@ -107,10 +107,10 @@
         phone: "0912345678",
         birthday: "2005-08-15",
         email: "thib@example.com",
-        facebook: "tranthib",
-        instagram: "thib.ig",
-        github: "tranthib",
-        tiktok: "thib.tiktok",
+        facebook: "https://facebook.com/tranthib",
+        instagram: "https://instagram.com/thib.ig",
+        github: "https://github.com/tranthib",
+        tiktok: "https://tiktok.com/@thib.tiktok",
         avatar: "https://i.pravatar.cc/150?img=2"
       },
       {
@@ -118,10 +118,10 @@
         phone: "0934567890",
         birthday: "2005-06-01",
         email: "cuongpq@example.com",
-        facebook: "cuongpq",
-        instagram: "cuong.ig",
-        github: "cuongpq",
-        tiktok: "cuongpq",
+        facebook: "https://facebook.com/cuongpq",
+        instagram: "https://instagram.com/cuong.ig",
+        github: "https://github.com/cuongpq",
+        tiktok: "https://tiktok.com/@cuongpq",
         avatar: "https://i.pravatar.cc/150?img=3"
       }
     ];
@@ -160,10 +160,10 @@
               <p><strong>Ngày sinh:</strong> ${birthday || 'N/A'}</p>
               <p><strong>Email:</strong> ${email || 'N/A'}</p>
               <div class="social-links">
-                ${facebook ? `<a href="https://facebook.com/${facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ""}
-                ${instagram ? `<a href="https://instagram.com/${instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ""}
-                ${github ? `<a href="https://github.com/${github}" target="_blank"><i class="fab fa-github"></i></a>` : ""}
-                ${tiktok ? `<a href="https://tiktok.com/@${tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>` : ""}
+                ${facebook ? `<a href="${facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ""}
+                ${instagram ? `<a href="${instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ""}
+                ${github ? `<a href="${github}" target="_blank"><i class="fab fa-github"></i></a>` : ""}
+                ${tiktok ? `<a href="${tiktok}" target="_blank"><i class="fab fa-tiktok"></i></a>` : ""}
               </div>
             </div>
           </div>
