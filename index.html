@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* CSS giữ nguyên như code gốc của bạn */
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
     :root {
@@ -101,6 +100,57 @@
     .social-links a:hover {
       color: #333;
     }
+
+    /* === CSS CHO MUSIC PLAYER === */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--card-background);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px var(--shadow-color);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 1000;
+    }
+
+    .music-player button {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .music-player button:hover {
+      background-color: #357abd;
+      transform: scale(1.05);
+    }
+
+    .music-player button i {
+      margin-right: 0.5rem;
+    }
+
+    .music-player select {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid var(--primary-color);
+      background-color: var(--card-background);
+      color: var(--text-color);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .music-player select:focus {
+      outline: none;
+      border-color: #357abd;
+    }
   </style>
 </head>
 
@@ -111,7 +161,18 @@
 
   <main id="card-container"></main>
 
-  <button onclick="playMusic()">Phát nhạc</button>
+  <!-- MUSIC PLAYER -->
+  <div class="music-player">
+    <button id="playPauseBtn" onclick="togglePlayPause()">
+      <i class="fas fa-play"></i> Phát nhạc
+    </button>
+    <select id="songSelector" onchange="changeSong()">
+      <option value="nhacnen.mp3" selected>Nhạc nền 1</option>
+      <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Nhạc nền 2</option>
+      <!-- Thêm các bài nhạc khác tại đây -->
+    </select>
+  </div>
+
   <audio id="bgMusic" loop>
     <source src="nhacnen.mp3" type="audio/mpeg">
     Trình duyệt của bạn không hỗ trợ thẻ audio.
@@ -199,11 +260,34 @@
     document.addEventListener("DOMContentLoaded", renderCards);
 
     // === XỬ LÝ NHẠC NỀN ===
-    function playMusic() {
-      const audio = document.getElementById('bgMusic');
+    const audio = document.getElementById('bgMusic');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const songSelector = document.getElementById('songSelector');
+
+    function togglePlayPause() {
+      if (audio.paused) {
+        audio.play()
+          .then(() => {
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Tạm dừng';
+            console.log('Nhạc đang phát');
+          })
+          .catch(err => console.error('Lỗi khi phát nhạc:', err));
+      } else {
+        audio.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Phát nhạc';
+        console.log('Nhạc đã tạm dừng');
+      }
+    }
+
+    function changeSong() {
+      const selectedSong = songSelector.value;
+      audio.src = selectedSong;
       audio.play()
-        .then(() => console.log('Nhạc đang phát'))
-        .catch(err => console.error('Lỗi khi phát nhạc:', err));
+        .then(() => {
+          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Tạm dừng';
+          console.log('Đã chuyển bài:', selectedSong);
+        })
+        .catch(err => console.error('Lỗi khi chuyển bài:', err));
     }
   </script>
 </body>
