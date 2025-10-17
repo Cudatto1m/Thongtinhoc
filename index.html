@@ -107,47 +107,83 @@
       bottom: 20px;
       right: 20px;
       background-color: var(--card-background);
-      padding: 1rem;
+      padding: 0.5rem;
       border-radius: 10px;
       box-shadow: 0 4px 8px var(--shadow-color);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
       z-index: 1000;
+      transition: all 0.3s ease;
     }
 
-    .music-player button {
+    .music-player.collapsed {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .music-player.collapsed .music-controls {
+      display: none;
+    }
+
+    .music-player .toggle-btn {
       background-color: var(--primary-color);
       color: #fff;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: background-color 0.3s, transform 0.2s;
     }
 
-    .music-player button:hover {
+    .music-player .toggle-btn:hover {
+      background-color: #357abd;
+      transform: scale(1.1);
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .music-controls button {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .music-controls button:hover {
       background-color: #357abd;
       transform: scale(1.05);
     }
 
-    .music-player button i {
-      margin-right: 0.5rem;
+    .music-controls button i {
+      margin-right: 0.3rem;
     }
 
-    .music-player select {
-      padding: 0.5rem;
+    .music-controls select {
+      padding: 0.4rem;
       border-radius: 5px;
       border: 1px solid var(--primary-color);
       background-color: var(--card-background);
       color: var(--text-color);
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
+      max-width: 150px;
       transition: border-color 0.3s;
     }
 
-    .music-player select:focus {
+    .music-controls select:focus {
       outline: none;
       border-color: #357abd;
     }
@@ -162,19 +198,24 @@
   <main id="card-container"></main>
 
   <!-- MUSIC PLAYER -->
-  <div class="music-player">
-    <button id="playPauseBtn" onclick="togglePlayPause()">
-      <i class="fas fa-play"></i> Phát nhạc
+  <div class="music-player" id="musicPlayer">
+    <button class="toggle-btn" onclick="toggleMusicPlayer()">
+      <i class="fas fa-music"></i>
     </button>
-    <select id="songSelector" onchange="changeSong()">
-      <option value="nhacnen.mp3" selected>Nhạc nền 1</option>
-      <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Nhạc nền 2</option>
-      <!-- Thêm các bài nhạc khác tại đây -->
-    </select>
+    <div class="music-controls">
+      <button id="playPauseBtn" onclick="togglePlayPause()">
+        <i class="fas fa-play"></i> Phát
+      </button>
+      <select id="songSelector" onchange="changeSong()">
+        <option value="https://cudatto1m.github.io/Thongtinhoc/nhacnen.mp3" selected>Nhạc nền 1</option>
+        <!-- Thêm bài nhạc khác tại đây, ví dụ: -->
+        <!-- <option value="https://cudatto1m.github.io/Thongtinhoc/nhacnen2.mp3">Nhạc nền 2</option> -->
+      </select>
+    </div>
   </div>
 
   <audio id="bgMusic" loop>
-    <source src="nhacnen.mp3" type="audio/mpeg">
+    <source src="https://cudatto1m.github.io/Thongtinhoc/nhacnen.mp3" type="audio/mpeg">
     Trình duyệt của bạn không hỗ trợ thẻ audio.
   </audio>
 
@@ -263,6 +304,7 @@
     const audio = document.getElementById('bgMusic');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const songSelector = document.getElementById('songSelector');
+    const musicPlayer = document.getElementById('musicPlayer');
 
     function togglePlayPause() {
       if (audio.paused) {
@@ -274,7 +316,7 @@
           .catch(err => console.error('Lỗi khi phát nhạc:', err));
       } else {
         audio.pause();
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Phát nhạc';
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Phát';
         console.log('Nhạc đã tạm dừng');
       }
     }
@@ -288,6 +330,10 @@
           console.log('Đã chuyển bài:', selectedSong);
         })
         .catch(err => console.error('Lỗi khi chuyển bài:', err));
+    }
+
+    function toggleMusicPlayer() {
+      musicPlayer.classList.toggle('collapsed');
     }
   </script>
 </body>
