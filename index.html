@@ -192,6 +192,12 @@
     document.addEventListener("DOMContentLoaded", renderCards);
   </script>
 
-  <audio id="bg-music" src="nhacnen.mp3" autoplay loop hidden></audio>
+  <button onclick="playMusic()">Phát nhạc</button>
+<audio id="bgMusic" src=nhacnen.mp3" loop></audio>
+<script>
+function playMusic() {
+  document.getElementById('bgMusic').play();
+}
+</script>
 </body>
 </html>
