@@ -208,8 +208,7 @@
       </button>
       <select id="songSelector" onchange="changeSong()">
         <option value="https://cudatto1m.github.io/Thongtinhoc/nhacnen.mp3" selected>Nhạc nền 1</option>
-        <!-- Thêm bài nhạc khác tại đây, ví dụ: -->
-        <!-- <option value="https://cudatto1m.github.io/Thongtinhoc/nhacnen2.mp3">Nhạc nền 2</option> -->
+        <option value="https://cudatto1m.github.io/Thongtinhoc/nhacnen2.mp3">Nhạc nền 2</option>
       </select>
     </div>
   </div>
@@ -311,7 +310,7 @@
         audio.play()
           .then(() => {
             playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Tạm dừng';
-            console.log('Nhạc đang phát');
+            console.log('Nhạc đang phát:', songSelector.value);
           })
           .catch(err => console.error('Lỗi khi phát nhạc:', err));
       } else {
